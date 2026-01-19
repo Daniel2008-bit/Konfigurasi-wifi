@@ -1,0 +1,45 @@
+#include <WiFi.h>
+
+/* ================== KONFIGURASI WIFI ================== */
+const char* ssid     = "NAMA_WIFI_KAMU";
+const char* password = "PASSWORD_WIFI_KAMU";
+/* ===================================================== */
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  Serial.println();
+  Serial.println("Menghubungkan ke WiFi...");
+  Serial.print("SSID: ");
+  Serial.println(ssid);
+
+  // Set mode WiFi sebagai Station
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  // Tunggu sampai terhubung
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  // Jika berhasil terhubung
+  Serial.println();
+  Serial.println("WiFi berhasil terhubung!");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() {
+  // Contoh pengecekan koneksi
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("WiFi masih terhubung");
+  } else {
+    Serial.println("WiFi terputus, mencoba reconnect...");
+    WiFi.disconnect();
+    WiFi.begin(ssid, password);
+  }
+
+  delay(5000);
+}
